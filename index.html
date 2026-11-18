@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embassy Suites Boston Marlborough — Pre-Order Lunch Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          },
+          colors: {
+            embassy: {
+              50: '#f0f7f6',
+              100: '#d9ebe8',
+              200: '#b5d7d2',
+              600: '#16655c',
+              700: '#11524b',
+              800: '#0d403a',
+              900: '#092e2a',
+            },
+            gold: {
+              400: '#d4af63',
+              500: '#b8903e',
+              600: '#9c752b',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: #f4f6f8;
+      color: #1e293b;
+    }
+    .label-card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    @media print {
+      body {
+        background: #ffffff !important;
+        margin: 0;
+        padding: 0;
+      }
+      #app-shell, #toast-container, #modal-backdrop, #print-preview-modal {
+        display: none !important;
+      }
+      #print-area {
+        display: block !important;
+        width: 100% !important;
+      }
+      @page {
+        margin: 0.45in;
+        size: letter portrait;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased">
+
+  <!-- Main Interactive App Shell -->
+  <div id="app-shell" class="min-h-screen flex flex-col">
+    <!-- Top Navigation -->
+    <header class="bg-embassy-900 text-white shadow-md sticky top-0 z-30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-embassy-800 border border-gold-500/60 flex items-center justify-center shrink-0">
+            <span class="font-serif text-gold-400 text-xl font-bold leading-none">E</span>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-[0.18em] text-gold-400 font-semibold">Embassy Suites by Hilton</div>
+            <div class="text-sm sm:text-base font-semibold text-white leading-tight">Boston Marlborough — Group Lunch Pre-Order</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <span id="cloud-sync-badge" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-embassy-800 text-embassy-100 border border-embassy-600/60">Connecting...</span>
+          <button id="nav-guest-btn" type="button" class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-embassy-900 shadow-sm">
+            Guest Order Form
+          </button>
+          <button id="nav-manager-btn" type="button" class="px-3.5 py-2 rounded-lg text-sm font-medium transition-colors bg-embassy-800 text-embassy-100 hover:bg-embassy-700 border border-embassy-600/60 flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span>Manager Portal</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <!-- GUEST VIEW -->
+      <section id="guest-view" class="max-w-3xl mx-auto">
+        <!-- Guest Form Card -->
+        <div id="guest-form-container" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-embassy-900 to-embassy-700 px-6 py-6 text-white border-b-4 border-gold-500">
+            <p class="text-xs uppercase tracking-[0.2em] text-gold-400 font-semibold mb-1">Embassy Suites Boston Marlborough</p>
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold">Pre-Order Lunch Menu</h1>
+            <p class="text-embassy-100 text-sm mt-1">Select your company and event date below to view your group's menu and submit your lunch order.</p>
+          </div>
+
+          <form id="guest-order-form" class="p-6 sm:p-8 space-y-7" novalidate>
+            <!-- Step 1: Group & Date Selection -->
+            <div class="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200 space-y-4">
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-embassy-800">1. Event Information</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="guest-company-select" class="block text-sm font-medium text-slate-700 mb-1.5">Company / Group <span class="text-rose-600">*</span></label>
+                  <select id="guest-company-select" required class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-embassy-600 focus:ring-2 focus:ring-embassy-600/20 outline-none">
+                    <option value="">Select your company...</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="guest-date-select" class="block text-sm font-medium text-slate-700 mb-1.5">Event Date <span class="text-rose-600">*</span></label>
+                  <select id="guest-date-select" required class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-embassy-600 focus:ring-2 focus:ring-embassy-600/20 outline-none disabled:bg-slate-100 disabled:text-slate-400" disabled>
+                    <option value="">Select a company first...</option>
+                  </select>
+                </div>
+              </div>
+              <div id="guest-group-note" class="hidden text-xs text-embassy-800 bg-embassy-50 border border-embassy-200 rounded-lg px-3.5 py-2"></div>
+            </div>
+
+            <!-- Dynamic Menu Area (shown once group & date selected) -->
+            <div id="guest-menu-section" class="hidden space-y-7">
+              <!-- Guest Name -->
+              <div>
+                <label for="guest-name-input" class="block text-sm font-semibold text-slate-800 mb-1.5">Guest Full Name <span class="text-rose-600">*</span></label>
+                <input id="guest-name-input" type="text" required placeholder="Enter your full name" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm text-slate-900 focus:border-embassy-600 focus:ring-2 focus:ring-embassy-600/20 outline-none" />
+              </div>
+
+              <!-- Entree Selection -->
+              <div>
+                <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                  <h2 class="text-sm font-semibold uppercase tracking-wider text-embassy-800">2. Menu Selection <span class="text-rose-600">*</span></h2>
+                  <span class="text-xs font-medium text-rose-700">*Please select one option from the menu below</span>
+                </div>
+                <div id="guest-entrees-list" class="space-y-3"></div>
+              </div>
+
+              <!-- Allergies & Special Requests -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div>
+                  <label for="guest-allergies-input" class="block text-sm font-semibold text-slate-800 mb-1.5">Allergies</label>
+                  <input id="guest-allergies-input" type="text" placeholder="e.g., Peanuts, Gluten, Dairy, None" class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-embassy-600 focus:ring-2 focus:ring-embassy-600/20 outline-none" />
+                  <p class="text-[11px] text-slate-500 mt-1">Please list any food allergies so our kitchen can prepare your meal safely.</p>
+                </div>
+                <div>
+                  <label for="guest-requests-input" class="block text-sm font-semibold text-slate-800 mb-1.5">Special Requests</label>
+                  <input id="guest-requests-input" type="text" placeholder="e.g., No mayo, dressing on the side" class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-embassy-600 focus:ring-2 focus:ring-embassy-600/20 outline-none" />
+                </div>
+              </div>
+
+              <!-- Beverage Selection -->
+              <div id="guest-beverage-section" class="bg-slate-50 rounded-xl p-4 sm:p-5 border border-slate-200">
+                <p id="guest-side-note" class="text-xs italic text-slate-600 mb-2">Served with Potato Chips and Choice of Beverage Below</p>
+                <h3 class="text-sm font-semibold text-slate-800 mb-3">Choice of Beverage <span class="text-rose-600">*</span></h3>
+                <div id="guest-beverages-list" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5"></div>
+              </div>
+
+              <!-- Form Error Banner -->
+              <div id="guest-form-error" class="hidden rounded-lg bg-rose-50 border border-rose-200 px-4 py-3 text-sm text-rose-800 font-medium"></div>
+
+              <!-- Submit -->
+              <div class="pt-2 flex justify-end">
+                <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-embassy-700 hover:bg-embassy-800 text-white font-semibold text-sm shadow-sm transition-colors">
+                  Submit Lunch Order
+                </button>
+              </div>
+            </div>
+
+            <!-- Empty Prompt before choosing group/date -->
+            <div id="guest-empty-prompt" class="text-center py-8 px-4 border border-dashed border-slate-300 rounded-xl bg-slate-50/70">
+              <p class="text-sm text-slate-600">Please choose your <span class="font-semibold text-slate-800">Company / Group</span> and <span class="font-semibold text-slate-800">Event Date</span> above to load the available lunch menu.</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- Order Confirmation Card -->
+        <div id="guest-confirmation-card" class="hidden bg-white rounded-2xl shadow-sm border border-emerald-200 overflow-hidden">
+          <div class="bg-emerald-700 px-6 py-6 text-white flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div>
+              <h2 class="font-serif text-2xl font-bold">Order Confirmed!</h2>
+              <p class="text-emerald-100 text-sm">Thank you. Your pre-order lunch selection has been received by our catering team.</p>
+            </div>
+          </div>
+          <div class="p-6 sm:p-8 space-y-5">
+            <div id="confirmation-details" class="bg-slate-50 rounded-xl border border-slate-200 p-5 space-y-2.5 text-sm"></div>
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+              <p class="text-xs text-slate-500">Need to make a change? Please contact your group coordinator or the Embassy Suites banquet team.</p>
+              <button id="submit-another-btn" type="button" class="px-5 py-2.5 rounded-xl bg-embassy-700 hover:bg-embassy-800 text-white font-semibold text-sm transition-colors">
+                Submit Another Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MANAGER VIEW -->
+      <section id="manager-view" class="hidden">
+        <!-- Manager Lock Screen -->
+        <div id="manager-login-card" class="max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mt-4">
+          <div class="w-12 h-12 rounded-xl bg-embassy-50 border border-embassy-200 text-embassy-700 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          </div>
+          <h2 class="text-xl font-bold text-center text-slate-900">Manager Restricted Access</h2>
+          <p class="text-sm text-slate-500 text-center mt-1 mb-6">Enter the manager PIN to customize group menus, view reports, and print order labels.</p>
+          <form id="manager-login-form" class="space-y-4">
+            <div>
+              <label for="manager-pin-input" class="block text-sm font-medium text-slate-700 mb-1.5">Manager PIN</label>
+              <input id="manager-pin-input" type="password" inputmode="numeric" autocomplete="off" placeholder="Enter PIN" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-center text-lg tracking-[0.35em] font-semibold text-slate-900 focus:border-embassy-600 focus:ring-2 focus:ring-embassy-600/20 outline-none" />
+              <p class="text-xs text-slate-400 text-center mt-2">Default PIN: <span class="font-mono font-semibold text-slate-600">2026</span> (can be changed inside Settings)</p>
+            </div>
+            <div id="manager-login-error" class="hidden text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3 py-2 text-center font-medium"></div>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-embassy-700 hover:bg-embassy-800 text-white font-semibold text-sm transition-colors">
+              Unlock Manager Portal
+            </button>
+          </form>
+        </div>
+
+        <!-- Manager Dashboard (Unlocked) -->
+        <div id="manager-dashboard" class="hidden space-y-6">
+          <!-- Dashboard Header & Filter Bar -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold text-slate-900">Catering Manager Dashboard</h2>
+              <p class="text-xs sm:text-sm text-slate-500">Manage company group menus, kitchen prep quantities, and printable labels.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5">
+                <label for="manager-group-filter" class="text-xs font-semibold text-slate-600 uppercase tracking-wide">Group:</label>
+                <select id="manager-group-filter" class="bg-transparent text-sm font-medium text-slate-900 outline-none"></select>
+              </div>
+              <button id="manager-refresh-btn" type="button" class="px-3.5 py-2 rounded-lg border border-embassy-300 bg-embassy-50 text-embassy-800 hover:bg-embassy-100 text-xs font-semibold flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Refresh
+              </button>
+              <button id="manager-lock-btn" type="button" class="px-3.5 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Lock Portal
+              </button>
+            </div>
+          </div>
+
+          <!-- Manager Sub-Tabs -->
+          <div class="flex flex-wrap gap-2 border-b border-slate-200 pb-1">
+            <button type="button" data-mtab="orders" class="mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-semibold transition-colors bg-white text-embassy-800 border border-b-0 border-slate-200">
+              Orders Report
+            </button>
+            <button type="button" data-mtab="quantities" class="mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              Quantities Summary
+            </button>
+            <button type="button" data-mtab="labels" class="mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              Individual Labels
+            </button>
+            <button type="button" data-mtab="groups" class="mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              Groups &amp; Custom Menus
+            </button>
+            <button type="button" data-mtab="settings" class="mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              PIN &amp; Settings
+            </button>
+          </div>
+
+          <!-- TAB 1: ORDERS REPORT -->
+          <div id="mtab-orders" class="mtab-panel bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Detailed Orders Report</h3>
+                <p id="orders-subtitle" class="text-xs text-slate-500"></p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button id="export-csv-btn" type="button" class="px-3.5 py-2 rounded-lg border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700">
+                  Export CSV
+                </button>
+                <button id="print-orders-btn" type="button" class="px-4 py-2 rounded-lg bg-embassy-700 hover:bg-embassy-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                  Print Orders Report
+                </button>
+              </div>
+            </div>
+            <div id="orders-table-wrapper" class="overflow-x-auto"></div>
+          </div>
+
+          <!-- TAB 2: QUANTITIES SUMMARY -->
+          <div id="mtab-quantities" class="mtab-panel hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Kitchen Quantities Summary</h3>
+                <p id="quantities-subtitle" class="text-xs text-slate-500"></p>
+              </div>
+              <button id="print-quantities-btn" type="button" class="px-4 py-2 rounded-lg bg-embassy-700 hover:bg-embassy-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                Print Quantities Report
+              </button>
+            </div>
+            <div id="quantities-content" class="space-y-5"></div>
+          </div>
+
+          <!-- TAB 3: INDIVIDUAL LABELS -->
+          <div id="mtab-labels" class="mtab-panel hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Individual Order Labels</h3>
+                <p class="text-xs text-slate-500">Choose a standard Avery / Letter label template or customize exact dimensions for accurate printing at 100% scale.</p>
+              </div>
+              <button id="print-labels-btn" type="button" class="px-4 py-2 rounded-lg bg-embassy-700 hover:bg-embassy-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                Print Individual Labels
+              </button>
+            </div>
+
+            <!-- Label Size & Sheet Configuration -->
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <div>
+                    <label for="label-preset-select" class="block text-[11px] font-semibold uppercase tracking-wider text-slate-600 mb-1">Label Standard / Template (US Letter 8.5" x 11")</label>
+                    <select id="label-preset-select" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 outline-none focus:border-embassy-600">
+                      <option value="avery5163">Avery 5163 / 8163 — 2" x 4" (10/sheet, 2x5)</option>
+                      <option value="avery5164">Avery 5164 / 8164 — 3.33" x 4" (6/sheet, 2x3)</option>
+                      <option value="avery5162">Avery 5162 / 8162 — 1.33" x 4" (14/sheet, 2x7)</option>
+                      <option value="avery5161">Avery 5161 / 8161 — 1" x 4" (20/sheet, 2x10)</option>
+                      <option value="avery5160">Avery 5160 / 8160 — 1" x 2.625" (30/sheet, 3x10)</option>
+                      <option value="avery5168">Avery 5168 — 3.5" x 5" (4/sheet, 2x2)</option>
+                      <option value="custom">Custom Dimensions...</option>
+                    </select>
+                  </div>
+                  <label class="inline-flex items-center gap-2 text-xs font-medium text-slate-700 pt-4 cursor-pointer">
+                    <input id="label-show-borders" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-embassy-700" />
+                    <span>Show cut/alignment borders</span>
+                  </label>
+                </div>
+                <span id="label-spec-badge" class="text-xs font-mono font-semibold px-2.5 py-1 rounded-lg bg-embassy-50 text-embassy-800 border border-embassy-200"></span>
+              </div>
+
+              <!-- Fine-tune / Custom Dimensions Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 pt-2 border-t border-slate-200/80">
+                <div>
+                  <label for="lbl-width" class="block text-[10px] font-semibold text-slate-500 uppercase">Width (in)</label>
+                  <input id="lbl-width" type="number" step="0.005" min="1" max="8.5" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-height" class="block text-[10px] font-semibold text-slate-500 uppercase">Height (in)</label>
+                  <input id="lbl-height" type="number" step="0.01" min="0.5" max="11" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-cols" class="block text-[10px] font-semibold text-slate-500 uppercase">Columns</label>
+                  <input id="lbl-cols" type="number" step="1" min="1" max="6" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-rows" class="block text-[10px] font-semibold text-slate-500 uppercase">Rows</label>
+                  <input id="lbl-rows" type="number" step="1" min="1" max="15" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-mtop" class="block text-[10px] font-semibold text-slate-500 uppercase">Top Margin</label>
+                  <input id="lbl-mtop" type="number" step="0.01" min="0" max="2" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-mleft" class="block text-[10px] font-semibold text-slate-500 uppercase">Left Margin</label>
+                  <input id="lbl-mleft" type="number" step="0.01" min="0" max="2" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-gapx" class="block text-[10px] font-semibold text-slate-500 uppercase">Col Gap (in)</label>
+                  <input id="lbl-gapx" type="number" step="0.01" min="0" max="2" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+                <div>
+                  <label for="lbl-gapy" class="block text-[10px] font-semibold text-slate-500 uppercase">Row Gap (in)</label>
+                  <input id="lbl-gapy" type="number" step="0.01" min="0" max="2" class="lbl-dim-input w-full mt-0.5 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-mono" />
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-500">Tip: When printing onto pre-cut Avery sticker sheets, uncheck <span class="font-semibold">Show cut/alignment borders</span> and set browser print scale to <span class="font-semibold">100% (Actual Size)</span> with Margins set to <span class="font-semibold">None</span>.</p>
+            </div>
+
+            <div id="labels-preview-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+          </div>
+
+          <!-- TAB 4: GROUPS & CUSTOM MENUS -->
+          <div id="mtab-groups" class="mtab-panel hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <!-- Left: Group List & Create Group -->
+              <div class="lg:col-span-5 space-y-4">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+                  <h3 class="text-base font-bold text-slate-900">Register New Company &amp; Date</h3>
+                  <form id="create-group-form" class="space-y-3">
+                    <div>
+                      <label for="new-group-company" class="block text-xs font-semibold text-slate-700 mb-1">Company / Group Name <span class="text-rose-600">*</span></label>
+                      <input id="new-group-company" type="text" required placeholder="e.g., Acme Corp" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    </div>
+                    <div>
+                      <label for="new-group-date" class="block text-xs font-semibold text-slate-700 mb-1">Event Date <span class="text-rose-600">*</span></label>
+                      <input id="new-group-date" type="date" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    </div>
+                    <div>
+                      <label for="new-group-note" class="block text-xs font-semibold text-slate-700 mb-1">Optional Event Note (shown to guests)</label>
+                      <input id="new-group-note" type="text" placeholder="e.g., Lunch served at 12:30 PM in Ballroom A" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    </div>
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-embassy-700 hover:bg-embassy-800 text-white text-sm font-semibold transition-colors">
+                      + Add Group &amp; Customize Menu
+                    </button>
+                  </form>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-3">
+                  <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Registered Groups</h3>
+                  <div id="groups-list-container" class="space-y-2.5"></div>
+                </div>
+              </div>
+
+              <!-- Right: Menu Customizer for Selected Group -->
+              <div class="lg:col-span-7 bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 space-y-5">
+                <div id="group-editor-empty" class="text-center py-12 text-sm text-slate-500">
+                  Select a group on the left to customize its menu items and beverages.
+                </div>
+                <div id="group-editor-panel" class="hidden space-y-6">
+                  <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-4">
+                    <div>
+                      <span class="text-xs font-semibold uppercase tracking-wider text-embassy-700">Customizing Menu For</span>
+                      <h3 id="editor-group-title" class="text-lg font-bold text-slate-900"></h3>
+                    </div>
+                    <span id="editor-group-count" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-embassy-50 text-embassy-800 border border-embassy-200"></span>
+                  </div>
+
+                  <!-- Entrees Toggle List -->
+                  <div class="space-y-2.5">
+                    <h4 class="text-sm font-bold text-slate-800">Available Menu Options</h4>
+                    <p class="text-xs text-slate-500">Check the items you want guests in this group to see on their form.</p>
+                    <div id="editor-items-list" class="space-y-2"></div>
+                  </div>
+
+                  <!-- Add Custom Item to Library & Group -->
+                  <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-3">
+                    <h4 class="text-sm font-bold text-slate-800">+ Add Custom Menu Item</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <input id="custom-item-name" type="text" placeholder="Item name (e.g., Caesar Salad)" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                      <input id="custom-item-addon" type="text" placeholder="Optional add-on (e.g., Add Salmon)" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    </div>
+                    <input id="custom-item-desc" type="text" placeholder="Description (ingredients, bread type, etc.)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    <input id="custom-item-choices" type="text" placeholder="Optional sub-choices comma-separated (e.g., Balsamic, Ranch)" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    <button id="add-custom-item-btn" type="button" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold">
+                      Add Item &amp; Enable for This Group
+                    </button>
+                  </div>
+
+                  <!-- Beverages & Side Note -->
+                  <div class="space-y-3 pt-2 border-t border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800">Beverages &amp; Side Note</h4>
+                    <div>
+                      <label for="editor-beverages-input" class="block text-xs font-medium text-slate-600 mb-1">Beverage choices (comma-separated)</label>
+                      <input id="editor-beverages-input" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    </div>
+                    <div>
+                      <label for="editor-side-note-input" class="block text-xs font-medium text-slate-600 mb-1">Side / Accompaniment text</label>
+                      <input id="editor-side-note-input" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-embassy-600" />
+                    </div>
+                    <button id="save-group-beverages-btn" type="button" class="px-4 py-2 rounded-lg bg-embassy-700 hover:bg-embassy-800 text-white text-xs font-semibold">
+                      Save Beverage &amp; Side Settings
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: SETTINGS -->
+          <div id="mtab-settings" class="mtab-panel hidden bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 max-w-xl space-y-5">
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Manager Access &amp; Data Settings</h3>
+              <p class="text-xs text-slate-500">Update the manager PIN or reset sample data.</p>
+            </div>
+            <form id="change-pin-form" class="space-y-3 border-b border-slate-200 pb-5">
+              <label for="new-pin-input" class="block text-sm font-semibold text-slate-800">Change Manager PIN</label>
+              <div class="flex gap-2">
+                <input id="new-pin-input" type="password" inputmode="numeric" minlength="4" required placeholder="New PIN (min 4 digits)" class="flex-1 rounded-lg border border-slate-300 px-3.5 py-2 text-sm outline-none focus:border-embassy-600" />
+                <button type="submit" class="px-4 py-2 rounded-lg bg-embassy-700 hover:bg-embassy-800 text-white text-xs font-semibold">
+                  Update PIN
+                </button>
+              </div>
+            </form>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="text-sm font-semibold text-slate-800">Reset Demo Data</p>
+                <p class="text-xs text-slate-500">Restore original Embassy Suites sample groups and orders.</p>
+              </div>
+              <button id="reset-demo-btn" type="button" class="px-4 py-2 rounded-lg border border-rose-300 text-rose-700 hover:bg-rose-50 text-xs font-semibold">
+                Reset to Defaults
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Dedicated Print Container (Hidden on screen, visible only on print) -->
+  <div id="print-area" class="hidden"></div>
+
+  <!-- In-page Print Preview Modal -->
+  <div id="print-preview-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-slate-100 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden border border-slate-300">
+      <div class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 id="print-preview-title" class="text-base font-bold text-slate-900">Print Preview</h3>
+          <p class="text-xs text-slate-500">Review the layout below, print directly, or download a printable HTML file.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="download-printable-btn" type="button" class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700">
+            Download Printable HTML
+          </button>
+          <button id="preview-print-now-btn" type="button" class="px-4 py-2 rounded-lg bg-embassy-700 hover:bg-embassy-800 text-white text-xs font-semibold shadow-sm">
+            Print Now
+          </button>
+          <button id="close-print-preview-btn" type="button" class="px-3 py-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 text-xs font-semibold">
+            Close
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div id="print-preview-body" class="bg-white shadow-sm border border-slate-200 rounded-xl p-6 sm:p-8 mx-auto max-w-[8.5in]"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-page Modal Backdrop -->
+  <div id="modal-backdrop" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 space-y-4">
+      <h3 id="modal-title" class="text-base font-bold text-slate-900"></h3>
+      <p id="modal-message" class="text-sm text-slate-600"></p>
+      <div class="flex justify-end gap-2 pt-2">
+        <button id="modal-cancel-btn" type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50">Cancel</button>
+        <button id="modal-confirm-btn" type="button" class="px-4 py-2 rounded-lg bg-rose-600 text-white text-xs font-semibold hover:bg-rose-700">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'embassy_lunch_preorder_v1';
+      const SUPABASE_URL = 'https://nwdqloricawtxrytqzfz.supabase.co';
+      const SUPABASE_KEY = 'sb_publishable_aoxr0giwGH6qGIdeJSR8Zg_3aWVJzHb';
+
+      function setSyncStatus(status, text) {
+        const badge = document.getElementById('cloud-sync-badge');
+        if (!badge) return;
+        badge.textContent = text;
+        if (status === 'ok') {
+          badge.className = 'hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-900/70 text-emerald-200 border border-emerald-500/40';
+        } else if (status === 'err') {
+          badge.className = 'hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-900/70 text-amber-200 border border-amber-500/40';
+        } else {
+          badge.className = 'hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-embassy-800 text-embassy-100 border border-embassy-600/60';
+        }
+      }
+
+      async function fetchCloudState() {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/app_state?id=eq.main&select=data`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const rows = await res.json();
+        return rows.length > 0 ? rows[0].data : null;
+      }
+
+      async function pushCloudState(payload) {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/app_state`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify({ id: 'main', data: payload, updated_at: new Date().toISOString() })
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+      }
+
+      const DEFAULT_MENU_LIBRARY = [
+        {
+          id: 'turkey-blta',
+          name: 'Roasted Turkey BLTA',
+          description: 'Applewood-Smoked Bacon, Mixed Greens, Vine-Ripened Tomatoes, Fresh Avocado, Mayo, on Grilled Ciabatta Bread',
+          addonLabel: '',
+          choicesLabel: '',
+          choices: []
+        },
+        {
+          id: 'grilled-chicken',
+          name: 'Grilled Chicken Sandwich',
+          description: 'Aged Cheddar Cheese, Apple Smoked Bacon, Lettuce, Tomato, Mayo on Grilled Brioche Roll',
+          addonLabel: '',
+          choicesLabel: '',
+          choices: []
+        },
+        {
+          id: 'roast-beef',
+          name: 'Roast Beef',
+          description: 'Sliced Roast Beef, Swiss Cheese, Baby Arugula, Sliced Tomatoes, Black Pepper Horseradish Aioli on a Butter Toasted Brioche Roll.',
+          addonLabel: '',
+          choicesLabel: '',
+          choices: []
+        },
+        {
+          id: 'med-wrap',
+          name: 'Mediterranean Wrap',
+          description: 'Grilled Vegetables, Red Onion, Lettuce, Tomato, Roasted Red Pepper Humus in a Grilled Wrap',
+          addonLabel: '',
+          choicesLabel: '',
+          choices: []
+        },
+        {
+          id: 'garden-salad',
+          name: 'Garden Salad',
+          description: 'Mixed Baby Greens, Cherry Tomatoes, Sliced European Cucumber, Red Onion, Shredded Carrot',
+          addonLabel: 'Add Grilled Chicken',
+          choicesLabel: 'Dressing Choice',
+          choices: ['Balsamic Vinaigrette', 'Ranch Dressing']
+        },
+        {
+          id: 'tuna-salad',
+          name: 'Tuna Salad',
+          description: 'Albacore White Tuna, Swiss Cheese, Arugula, Sliced Tomato',
+          addonLabel: '',
+          choicesLabel: '',
+          choices: []
+        },
+        {
+          id: 'chicken-cranberry',
+          name: 'Grilled Chicken & Cranberry Salad',
+          description: 'Chopped Grilled Chicken, Dry Cranberries, Toasted Almond, Arugula, Sliced Tomatoes on Toasted Croissant',
+          addonLabel: '',
+          choicesLabel: '',
+          choices: []
+        }
+      ];
+
+      function createDefaultState() {
+        return {
+          managerPin: '2026',
+          menuLibrary: JSON.parse(JSON.stringify(DEFAULT_MENU_LIBRARY)),
+          groups: [
+            {
+              id: 'grp-boston-tech',
+              company: 'Boston Tech Solutions',
+              date: '2026-11-20',
+              note: 'Lunch served at 12:30 PM in Executive Room B',
+              enabledItemIds: ['turkey-blta', 'grilled-chicken', 'roast-beef', 'med-wrap', 'garden-salad'],
+              beverages: ['Pepsi', 'Diet Pepsi', 'Starry', 'Ginger Ale'],
+              sideNote: 'Served with Potato Chips and Choice of Beverage Below'
+            },
+            {
+              id: 'grp-marlborough-med',
+              company: 'Marlborough Medical Group',
+              date: '2026-11-24',
+              note: 'Boxed lunches delivered to Conference Suite 2',
+              enabledItemIds: ['turkey-blta', 'med-wrap', 'garden-salad', 'tuna-salad', 'chicken-cranberry'],
+              beverages: ['Pepsi', 'Diet Pepsi', 'Starry', 'Ginger Ale', 'Bottled Water'],
+              sideNote: 'Served with Potato Chips and Choice of Beverage Below'
+            }
+          ],
+          orders: [
+            {
+              id: 'ORD-1001',
+              groupId: 'grp-boston-tech',
+              guestName: 'Sarah Jenkins',
+              itemId: 'turkey-blta',
+              itemName: 'Roasted Turkey BLTA',
+              addonSelected: false,
+              addonLabel: '',
+              choiceSelected: '',
+              beverage: 'Diet Pepsi',
+              allergies: 'None',
+              specialRequests: 'Extra napkins',
+              submittedAt: '2026-11-17T14:20:00Z'
+            },
+            {
+              id: 'ORD-1002',
+              groupId: 'grp-boston-tech',
+              guestName: 'Marcus Vance',
+              itemId: 'garden-salad',
+              itemName: 'Garden Salad',
+              addonSelected: true,
+              addonLabel: 'Add Grilled Chicken',
+              choiceSelected: 'Balsamic Vinaigrette',
+              beverage: 'Starry',
+              allergies: 'Tree Nuts',
+              specialRequests: 'Dressing on the side',
+              submittedAt: '2026-11-17T15:05:00Z'
+            },
+            {
+              id: 'ORD-1003',
+              groupId: 'grp-boston-tech',
+              guestName: 'Elena Rostova',
+              itemId: 'roast-beef',
+              itemName: 'Roast Beef',
+              addonSelected: false,
+              addonLabel: '',
+              choiceSelected: '',
+              beverage: 'Pepsi',
+              allergies: '',
+              specialRequests: '',
+              submittedAt: '2026-11-17T15:40:00Z'
+            },
+            {
+              id: 'ORD-1004',
+              groupId: 'grp-boston-tech',
+              guestName: 'David Chen',
+              itemId: 'turkey-blta',
+              itemName: 'Roasted Turkey BLTA',
+              addonSelected: false,
+              addonLabel: '',
+              choiceSelected: '',
+              beverage: 'Ginger Ale',
+              allergies: '',
+              specialRequests: 'No mayo please',
+              submittedAt: '2026-11-17T16:12:00Z'
+            },
+            {
+              id: 'ORD-1005',
+              groupId: 'grp-marlborough-med',
+              guestName: 'Dr. Priya Patel',
+              itemId: 'med-wrap',
+              itemName: 'Mediterranean Wrap',
+              addonSelected: false,
+              addonLabel: '',
+              choiceSelected: '',
+              beverage: 'Bottled Water',
+              allergies: 'Dairy',
+              specialRequests: '',
+              submittedAt: '2026-11-17T17:00:00Z'
+            }
+          ]
+        };
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.groups) && Array.isArray(parsed.menuLibrary)) {
+              return parsed;
+            }
+          }
+        } catch (e) {}
+        return createDefaultState();
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+        pushCloudState(state)
+          .then(() => setSyncStatus('ok', 'Cloud Synced'))
+          .catch(() => setSyncStatus('err', 'Local Mode (Offline)'));
+      }
+
+      let state = loadState();
+      let managerUnlocked = false;
+      let activeManagerTab = 'orders';
+      let selectedManagerGroupId = state.groups[0]?.id || 'ALL';
+      let editingGroupId = state.groups[0]?.id || null;
+      let modalConfirmCallback = null;
+
+      // Utility helpers
+      function esc(str) {
+        return String(str ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return dateStr;
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      function showToast(msg, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const el = document.createElement('div');
+        const bg = type === 'error' ? 'bg-rose-700' : 'bg-embassy-800';
+        el.className = `${bg} text-white text-xs font-medium px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 transition-opacity`;
+        el.textContent = msg;
+        container.appendChild(el);
+        setTimeout(() => {
+          el.classList.add('opacity-0');
+          setTimeout(() => el.remove(), 300);
+        }, 2800);
+      }
+
+      function openConfirmModal(title, message, onConfirm) {
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-message').textContent = message;
+        modalConfirmCallback = onConfirm;
+        document.getElementById('modal-backdrop').classList.remove('hidden');
+      }
+
+      function closeConfirmModal() {
+        document.getElementById('modal-backdrop').classList.add('hidden');
+        modalConfirmCallback = null;
+      }
+
+      document.getElementById('modal-cancel-btn').addEventListener('click', closeConfirmModal);
+      document.getElementById('modal-confirm-btn').addEventListener('click', () => {
+        if (modalConfirmCallback) modalConfirmCallback();
+        closeConfirmModal();
+      });
+
+      // Top Navigation
+      const navGuestBtn = document.getElementById('nav-guest-btn');
+      const navManagerBtn = document.getElementById('nav-manager-btn');
+      const guestView = document.getElementById('guest-view');
+      const managerView = document.getElementById('manager-view');
+
+      function switchMainView(view) {
+        if (view === 'guest') {
+          guestView.classList.remove('hidden');
+          managerView.classList.add('hidden');
+          navGuestBtn.className = 'px-3.5 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-embassy-900 shadow-sm';
+          navManagerBtn.className = 'px-3.5 py-2 rounded-lg text-sm font-medium transition-colors bg-embassy-800 text-embassy-100 hover:bg-embassy-700 border border-embassy-600/60 flex items-center gap-1.5';
+          renderGuestCompanySelect();
+        } else {
+          guestView.classList.add('hidden');
+          managerView.classList.remove('hidden');
+          navManagerBtn.className = 'px-3.5 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-embassy-900 shadow-sm flex items-center gap-1.5';
+          navGuestBtn.className = 'px-3.5 py-2 rounded-lg text-sm font-medium transition-colors bg-embassy-800 text-embassy-100 hover:bg-embassy-700 border border-embassy-600/60';
+          renderManagerAuthState();
+        }
+      }
+
+      navGuestBtn.addEventListener('click', () => switchMainView('guest'));
+      navManagerBtn.addEventListener('click', () => switchMainView('manager'));
+
+      // ================= GUEST VIEW LOGIC =================
+      const guestCompanySelect = document.getElementById('guest-company-select');
+      const guestDateSelect = document.getElementById('guest-date-select');
+      const guestMenuSection = document.getElementById('guest-menu-section');
+      const guestEmptyPrompt = document.getElementById('guest-empty-prompt');
+      const guestGroupNote = document.getElementById('guest-group-note');
+      const guestEntreesList = document.getElementById('guest-entrees-list');
+      const guestBeveragesList = document.getElementById('guest-beverages-list');
+      const guestSideNote = document.getElementById('guest-side-note');
+      const guestFormError = document.getElementById('guest-form-error');
+      const guestFormContainer = document.getElementById('guest-form-container');
+      const guestConfirmationCard = document.getElementById('guest-confirmation-card');
+
+      function renderGuestCompanySelect() {
+        const currentCompany = guestCompanySelect.value;
+        const companies = [...new Set(state.groups.map(g => g.company))].sort();
+        guestCompanySelect.innerHTML = '<option value="">Select your company...</option>' +
+          companies.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+        if (companies.includes(currentCompany)) {
+          guestCompanySelect.value = currentCompany;
+        } else {
+          guestDateSelect.innerHTML = '<option value="">Select a company first...</option>';
+          guestDateSelect.disabled = true;
+          guestMenuSection.classList.add('hidden');
+          guestEmptyPrompt.classList.remove('hidden');
+          guestGroupNote.classList.add('hidden');
+        }
+      }
+
+      guestCompanySelect.addEventListener('change', () => {
+        const company = guestCompanySelect.value;
+        guestFormError.classList.add('hidden');
+        if (!company) {
+          guestDateSelect.innerHTML = '<option value="">Select a company first...</option>';
+          guestDateSelect.disabled = true;
+          guestMenuSection.classList.add('hidden');
+          guestEmptyPrompt.classList.remove('hidden');
+          guestGroupNote.classList.add('hidden');
+          return;
+        }
+        const matchingGroups = state.groups
+          .filter(g => g.company === company)
+          .sort((a, b) => a.date.localeCompare(b.date));
+
+        guestDateSelect.disabled = false;
+        guestDateSelect.innerHTML = '<option value="">Select event date...</option>' +
+          matchingGroups.map(g => `<option value="${esc(g.id)}">${esc(formatDate(g.date))}</option>`).join('');
+
+        // Auto-select if only one date exists for this company
+        if (matchingGroups.length === 1) {
+          guestDateSelect.value = matchingGroups[0].id;
+          renderGuestMenuForGroup(matchingGroups[0].id);
+        } else {
+          guestMenuSection.classList.add('hidden');
+          guestEmptyPrompt.classList.remove('hidden');
+          guestGroupNote.classList.add('hidden');
+        }
+      });
+
+      guestDateSelect.addEventListener('change', () => {
+        guestFormError.classList.add('hidden');
+        const groupId = guestDateSelect.value;
+        if (!groupId) {
+          guestMenuSection.classList.add('hidden');
+          guestEmptyPrompt.classList.remove('hidden');
+          guestGroupNote.classList.add('hidden');
+          return;
+        }
+        renderGuestMenuForGroup(groupId);
+      });
+
+      function renderGuestMenuForGroup(groupId) {
+        const group = state.groups.find(g => g.id === groupId);
+        if (!group) return;
+
+        if (group.note) {
+          guestGroupNote.textContent = group.note;
+          guestGroupNote.classList.remove('hidden');
+        } else {
+          guestGroupNote.classList.add('hidden');
+        }
+
+        const items = state.menuLibrary.filter(item => group.enabledItemIds.includes(item.id));
+        if (items.length === 0) {
+          guestEntreesList.innerHTML = '<p class="text-sm text-slate-500 italic">No menu items are currently enabled for this group.</p>';
+        } else {
+          guestEntreesList.innerHTML = items.map(item => {
+            const hasAddon = Boolean(item.addonLabel);
+            const hasChoices = Array.isArray(item.choices) && item.choices.length > 0;
+            return `
+              <label class="block rounded-xl border border-slate-200 hover:border-embassy-600/60 bg-white p-4 cursor-pointer transition-all has-[:checked]:border-embassy-700 has-[:checked]:bg-embassy-50/40 has-[:checked]:ring-1 has-[:checked]:ring-embassy-700">
+                <div class="flex items-start gap-3">
+                  <input type="radio" name="entree" value="${esc(item.id)}" class="entree-radio mt-1 h-4 w-4 text-embassy-700 border-slate-300 focus:ring-embassy-600" />
+                  <div class="flex-1 min-w-0">
+                    <div class="font-semibold text-slate-900 text-sm sm:text-base">${esc(item.name)}</div>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5 leading-relaxed">${esc(item.description)}</p>
+                    ${(hasAddon || hasChoices) ? `
+                      <div class="entree-suboptions hidden mt-3 pt-3 border-t border-embassy-200/70 space-y-2.5" data-item-id="${esc(item.id)}">
+                        ${hasAddon ? `
+                          <label class="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-embassy-900 cursor-pointer">
+                            <input type="checkbox" class="addon-checkbox h-4 w-4 rounded border-slate-300 text-embassy-700 focus:ring-embassy-600" data-item-id="${esc(item.id)}" />
+                            <span>${esc(item.addonLabel)}</span>
+                          </label>
+                        ` : ''}
+                        ${hasChoices ? `
+                          <div class="flex flex-wrap items-center gap-3">
+                            <span class="text-xs font-semibold text-slate-700">${esc(item.choicesLabel || 'Option')}: <span class="text-rose-600">*</span></span>
+                            ${item.choices.map(ch => `
+                              <label class="inline-flex items-center gap-1.5 text-xs sm:text-sm text-slate-800 cursor-pointer">
+                                <input type="radio" name="choice-${esc(item.id)}" value="${esc(ch)}" class="h-3.5 w-3.5 text-embassy-700 border-slate-300" />
+                                <span>${esc(ch)}</span>
+                              </label>
+                            `).join('')}
+                          </div>
+                        ` : ''}
+                      </div>
+                    ` : ''}
+                  </div>
+                </div>
+              </label>
+            `;
+          }).join('');
+        }
+
+        // Beverages
+        guestSideNote.textContent = group.sideNote || 'Served with Potato Chips and Choice of Beverage Below';
+        const bevs = group.beverages || [];
+        guestBeveragesList.innerHTML = bevs.map(bev => `
+          <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2.5 cursor-pointer hover:border-embassy-600/60 has-[:checked]:border-embassy-700 has-[:checked]:bg-embassy-50 has-[:checked]:font-semibold">
+            <input type="radio" name="beverage" value="${esc(bev)}" class="h-4 w-4 text-embassy-700 border-slate-300" />
+            <span class="text-xs sm:text-sm text-slate-800">${esc(bev)}</span>
+          </label>
+        `).join('');
+
+        guestEmptyPrompt.classList.add('hidden');
+        guestMenuSection.classList.remove('hidden');
+      }
+
+      // Show/hide sub-options when entree changes
+      guestEntreesList.addEventListener('change', (e) => {
+        if (e.target.classList.contains('entree-radio')) {
+          const selectedId = e.target.value;
+          guestEntreesList.querySelectorAll('.entree-suboptions').forEach(box => {
+            if (box.dataset.itemId === selectedId) {
+              box.classList.remove('hidden');
+            } else {
+              box.classList.add('hidden');
+            }
+          });
+        }
+      });
+
+      document.getElementById('guest-order-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        guestFormError.classList.add('hidden');
+
+        const groupId = guestDateSelect.value;
+        const group = state.groups.find(g => g.id === groupId);
+        const guestName = document.getElementById('guest-name-input').value.trim();
+        const entreeRadio = guestEntreesList.querySelector('input[name="entree"]:checked');
+        const bevRadio = guestBeveragesList.querySelector('input[name="beverage"]:checked');
+        const allergies = document.getElementById('guest-allergies-input').value.trim();
+        const specialRequests = document.getElementById('guest-requests-input').value.trim();
+
+        if (!group) {
+          guestFormError.textContent = 'Please select your company and event date.';
+          guestFormError.classList.remove('hidden');
+          return;
+        }
+        if (!guestName) {
+          guestFormError.textContent = 'Please enter your full name.';
+          guestFormError.classList.remove('hidden');
+          return;
+        }
+        if (!entreeRadio) {
+          guestFormError.textContent = 'Please select one option from the menu.';
+          guestFormError.classList.remove('hidden');
+          return;
+        }
+
+        const item = state.menuLibrary.find(i => i.id === entreeRadio.value);
+        let addonSelected = false;
+        let choiceSelected = '';
+
+        if (item.addonLabel) {
+          const cb = guestEntreesList.querySelector(`.addon-checkbox[data-item-id="${item.id}"]`);
+          addonSelected = cb ? cb.checked : false;
+        }
+        if (item.choices && item.choices.length > 0) {
+          const chRadio = guestEntreesList.querySelector(`input[name="choice-${item.id}"]:checked`);
+          if (!chRadio) {
+            guestFormError.textContent = `Please select a ${item.choicesLabel || 'choice'} for ${item.name}.`;
+            guestFormError.classList.remove('hidden');
+            return;
+          }
+          choiceSelected = chRadio.value;
+        }
+
+        if ((group.beverages || []).length > 0 && !bevRadio) {
+          guestFormError.textContent = 'Please select a beverage choice.';
+          guestFormError.classList.remove('hidden');
+          return;
+        }
+
+        const orderId = 'ORD-' + (1001 + state.orders.length);
+        const newOrder = {
+          id: orderId,
+          groupId: group.id,
+          guestName,
+          itemId: item.id,
+          itemName: item.name,
+          addonSelected,
+          addonLabel: addonSelected ? item.addonLabel : '',
+          choiceSelected,
+          beverage: bevRadio ? bevRadio.value : 'None',
+          allergies,
+          specialRequests,
+          submittedAt: new Date().toISOString()
+        };
+
+        (async () => {
+          try {
+            const latest = await fetchCloudState();
+            if (latest && Array.isArray(latest.orders)) {
+              state = latest;
+            }
+          } catch (err) {}
+          const orderNum = 1001 + state.orders.length;
+          newOrder.id = 'ORD-' + orderNum;
+          state.orders.push(newOrder);
+          saveState();
+        })();
+
+        // Render confirmation screen
+        const extras = [newOrder.addonLabel, newOrder.choiceSelected].filter(Boolean).join(' • ');
+        document.getElementById('confirmation-details').innerHTML = `
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">Confirmation #</span>
+            <span class="font-mono font-bold text-embassy-800">${esc(newOrder.id)}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">Guest Name</span>
+            <span class="font-semibold text-slate-900">${esc(newOrder.guestName)}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">Company &amp; Date</span>
+            <span class="font-medium text-slate-900">${esc(group.company)} — ${esc(formatDate(group.date))}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">Menu Selection</span>
+            <span class="font-semibold text-slate-900 text-right">${esc(newOrder.itemName)}${extras ? `<br><span class="text-xs font-normal text-slate-600">${esc(extras)}</span>` : ''}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">Beverage</span>
+            <span class="font-medium text-slate-900">${esc(newOrder.beverage)} <span class="text-xs text-slate-500">(+ Potato Chips)</span></span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200 pb-2">
+            <span class="text-slate-500">Allergies</span>
+            <span class="font-medium ${newOrder.allergies ? 'text-rose-700 font-semibold' : 'text-slate-500'}">${esc(newOrder.allergies || 'None reported')}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">Special Requests</span>
+            <span class="font-medium text-slate-800 text-right">${esc(newOrder.specialRequests || 'None')}</span>
+          </div>
+        `;
+
+        guestFormContainer.classList.add('hidden');
+        guestConfirmationCard.classList.remove('hidden');
+      });
+
+      document.getElementById('submit-another-btn').addEventListener('click', () => {
+        document.getElementById('guest-name-input').value = '';
+        document.getElementById('guest-allergies-input').value = '';
+        document.getElementById('guest-requests-input').value = '';
+        guestEntreesList.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => { el.checked = false; });
+        guestEntreesList.querySelectorAll('.entree-suboptions').forEach(box => box.classList.add('hidden'));
+        guestBeveragesList.querySelectorAll('input[type="radio"]').forEach(el => { el.checked = false; });
+        guestConfirmationCard.classList.add('hidden');
+        guestFormContainer.classList.remove('hidden');
+      });
+
+      // ================= MANAGER VIEW LOGIC =================
+      const managerLoginCard = document.getElementById('manager-login-card');
+      const managerDashboard = document.getElementById('manager-dashboard');
+      const managerLoginError = document.getElementById('manager-login-error');
+      const managerGroupFilter = document.getElementById('manager-group-filter');
+
+      function renderManagerAuthState() {
+        if (managerUnlocked) {
+          managerLoginCard.classList.add('hidden');
+          managerDashboard.classList.remove('hidden');
+          renderManagerGroupFilter();
+          renderActiveManagerTab();
+        } else {
+          managerLoginCard.classList.remove('hidden');
+          managerDashboard.classList.add('hidden');
+          document.getElementById('manager-pin-input').value = '';
+          managerLoginError.classList.add('hidden');
+        }
+      }
+
+      document.getElementById('manager-login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pin = document.getElementById('manager-pin-input').value.trim();
+        if (pin === state.managerPin) {
+          managerUnlocked = true;
+          renderManagerAuthState();
+          showToast('Manager Portal unlocked');
+        } else {
+          managerLoginError.textContent = 'Incorrect PIN. Please try again.';
+          managerLoginError.classList.remove('hidden');
+        }
+      });
+
+      document.getElementById('manager-lock-btn').addEventListener('click', () => {
+        managerUnlocked = false;
+        renderManagerAuthState();
+        showToast('Manager Portal locked');
+      });
+
+      // Manager Tabs
+      document.querySelectorAll('.mtab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeManagerTab = btn.dataset.mtab;
+          document.querySelectorAll('.mtab-btn').forEach(b => {
+            if (b.dataset.mtab === activeManagerTab) {
+              b.className = 'mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-semibold transition-colors bg-white text-embassy-800 border border-b-0 border-slate-200';
+            } else {
+              b.className = 'mtab-btn px-4 py-2.5 rounded-t-xl text-sm font-medium transition-colors text-slate-600 hover:text-slate-900';
+            }
+          });
+          document.querySelectorAll('.mtab-panel').forEach(p => p.classList.add('hidden'));
+          document.getElementById(`mtab-${activeManagerTab}`).classList.remove('hidden');
+          renderActiveManagerTab();
+        });
+      });
+
+      function renderManagerGroupFilter() {
+        const opts = ['<option value="ALL">All Groups &amp; Dates</option>']
+          .concat(state.groups.map(g => `<option value="${esc(g.id)}">${esc(g.company)} (${esc(formatDate(g.date))})</option>`));
+        managerGroupFilter.innerHTML = opts.join('');
+        if (selectedManagerGroupId !== 'ALL' && !state.groups.some(g => g.id === selectedManagerGroupId)) {
+          selectedManagerGroupId = 'ALL';
+        }
+        managerGroupFilter.value = selectedManagerGroupId;
+      }
+
+      managerGroupFilter.addEventListener('change', () => {
+        selectedManagerGroupId = managerGroupFilter.value;
+        renderActiveManagerTab();
+      });
+
+      function getFilteredOrders() {
+        if (selectedManagerGroupId === 'ALL') return state.orders;
+        return state.orders.filter(o => o.groupId === selectedManagerGroupId);
+      }
+
+      function getSelectedGroupLabel() {
+        if (selectedManagerGroupId === 'ALL') return 'All Registered Groups';
+        const g = state.groups.find(gr => gr.id === selectedManagerGroupId);
+        return g ? `${g.company} — ${formatDate(g.date)}` : 'Selected Group';
+      }
+
+      function renderActiveManagerTab() {
+        if (activeManagerTab === 'orders') renderOrdersReport();
+        else if (activeManagerTab === 'quantities') renderQuantitiesReport();
+        else if (activeManagerTab === 'labels') renderLabelsPreview();
+        else if (activeManagerTab === 'groups') renderGroupsManager();
+      }
+
+      // TAB 1: ORDERS REPORT
+      function renderOrdersReport() {
+        const orders = getFilteredOrders();
+        const label = getSelectedGroupLabel();
+        document.getElementById('orders-subtitle').textContent = `${label} • ${orders.length} order(s)`;
+        const wrapper = document.getElementById('orders-table-wrapper');
+
+        if (orders.length === 0) {
+          wrapper.innerHTML = '<div class="text-center py-10 text-sm text-slate-500 border border-dashed border-slate-200 rounded-xl">No orders submitted yet for this selection.</div>';
+          return;
+        }
+
+        wrapper.innerHTML = `
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-600">
+                <th class="py-3 px-3 font-semibold">Guest Name</th>
+                <th class="py-3 px-3 font-semibold">Group / Date</th>
+                <th class="py-3 px-3 font-semibold">Menu Selection</th>
+                <th class="py-3 px-3 font-semibold">Beverage</th>
+                <th class="py-3 px-3 font-semibold">Allergies</th>
+                <th class="py-3 px-3 font-semibold">Special Requests</th>
+                <th class="py-3 px-3 font-semibold text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${orders.map(o => {
+                const grp = state.groups.find(g => g.id === o.groupId);
+                const extras = [o.addonLabel, o.choiceSelected].filter(Boolean).join(' • ');
+                const hasAllergy = o.allergies && o.allergies.toLowerCase() !== 'none';
+                return `
+                  <tr class="hover:bg-slate-50/80">
+                    <td class="py-3 px-3 font-semibold text-slate-900">
+                      ${esc(o.guestName)}
+                      <div class="text-[11px] font-mono text-slate-400 font-normal">${esc(o.id)}</div>
+                    </td>
+                    <td class="py-3 px-3 text-xs text-slate-600">
+                      <div class="font-medium text-slate-800">${esc(grp ? grp.company : 'Unknown')}</div>
+                      <div>${esc(grp ? formatDate(grp.date) : '')}</div>
+                    </td>
+                    <td class="py-3 px-3">
+                      <div class="font-medium text-slate-900">${esc(o.itemName)}</div>
+                      ${extras ? `<div class="text-xs text-embassy-700">${esc(extras)}</div>` : ''}
+                    </td>
+                    <td class="py-3 px-3 text-slate-700">${esc(o.beverage)}</td>
+                    <td class="py-3 px-3">
+                      ${hasAllergy
+                        ? `<span class="inline-block px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 text-xs font-semibold">${esc(o.allergies)}</span>`
+                        : `<span class="text-xs text-slate-400">None</span>`}
+                    </td>
+                    <td class="py-3 px-3 text-xs text-slate-600">${esc(o.specialRequests || '—')}</td>
+                    <td class="py-3 px-3 text-right">
+                      <button type="button" data-delete-order="${esc(o.id)}" class="delete-order-btn text-xs text-rose-600 hover:text-rose-800 font-medium">Remove</button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+
+      document.getElementById('orders-table-wrapper').addEventListener('click', (e) => {
+        const btn = e.target.closest('.delete-order-btn');
+        if (!btn) return;
+        const id = btn.dataset.deleteOrder;
+        openConfirmModal('Remove Order', `Are you sure you want to remove order ${id}?`, () => {
+          state.orders = state.orders.filter(o => o.id !== id);
+          saveState();
+          renderOrdersReport();
+          showToast(`Order ${id} removed`);
+        });
+      });
+
+      document.getElementById('export-csv-btn').addEventListener('click', () => {
+        const orders = getFilteredOrders();
+        if (orders.length === 0) {
+          showToast('No orders to export', 'error');
+          return;
+        }
+        const headers = ['Order ID', 'Company', 'Date', 'Guest Name', 'Menu Item', 'Add-on', 'Option/Dressing', 'Beverage', 'Allergies', 'Special Requests'];
+        const rows = orders.map(o => {
+          const grp = state.groups.find(g => g.id === o.groupId);
+          return [o.id, grp?.company || '', grp?.date || '', o.guestName, o.itemName, o.addonLabel, o.choiceSelected, o.beverage, o.allergies, o.specialRequests]
+            .map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(',');
+        });
+        const csv = [headers.join(','), ...rows].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `embassy_lunch_orders_${selectedManagerGroupId}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast('CSV exported');
+      });
+
+      // TAB 2: QUANTITIES SUMMARY
+      function computeQuantities(orders) {
+        const entreeCounts = {};
+        const beverageCounts = {};
+        const addonCounts = {};
+        const choiceCounts = {};
+        const allergyList = [];
+
+        orders.forEach(o => {
+          entreeCounts[o.itemName] = (entreeCounts[o.itemName] || 0) + 1;
+          if (o.addonLabel) {
+            const k = `${o.itemName} — ${o.addonLabel}`;
+            addonCounts[k] = (addonCounts[k] || 0) + 1;
+          }
+          if (o.choiceSelected) {
+            const k = `${o.choiceSelected}`;
+            choiceCounts[k] = (choiceCounts[k] || 0) + 1;
+          }
+          if (o.beverage && o.beverage !== 'None') {
+            beverageCounts[o.beverage] = (beverageCounts[o.beverage] || 0) + 1;
+          }
+          const hasAllergy = o.allergies && o.allergies.toLowerCase() !== 'none';
+          if (hasAllergy || o.specialRequests) {
+            allergyList.push(o);
+          }
+        });
+        return { entreeCounts, beverageCounts, addonCounts, choiceCounts, allergyList };
+      }
+
+      function renderQuantitiesReport() {
+        const orders = getFilteredOrders();
+        const label = getSelectedGroupLabel();
+        document.getElementById('quantities-subtitle').textContent = `${label} • Total Meals: ${orders.length}`;
+        const container = document.getElementById('quantities-content');
+
+        if (orders.length === 0) {
+          container.innerHTML = '<div class="text-center py-10 text-sm text-slate-500 border border-dashed border-slate-200 rounded-xl">No orders submitted yet for this selection.</div>';
+          return;
+        }
+
+        const { entreeCounts, beverageCounts, addonCounts, choiceCounts, allergyList } = computeQuantities(orders);
+
+        const renderCountRows = (obj) => {
+          const entries = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+          if (entries.length === 0) return '<p class="text-xs text-slate-400 italic">None</p>';
+          return entries.map(([name, count]) => `
+            <div class="flex items-center justify-between py-2 border-b border-slate-100 last:border-0 text-sm">
+              <span class="font-medium text-slate-800">${esc(name)}</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-embassy-50 text-embassy-800 font-bold text-xs border border-embassy-200">${count}</span>
+            </div>
+          `).join('');
+        };
+
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-embassy-800 mb-3">Entrees Total (${orders.length})</h4>
+              ${renderCountRows(entreeCounts)}
+              ${Object.keys(addonCounts).length > 0 ? `
+                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-600 mt-4 mb-2">Add-ons</h5>
+                ${renderCountRows(addonCounts)}
+              ` : ''}
+              ${Object.keys(choiceCounts).length > 0 ? `
+                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-600 mt-4 mb-2">Dressings / Sub-choices</h5>
+                ${renderCountRows(choiceCounts)}
+              ` : ''}
+            </div>
+
+            <div class="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-embassy-800 mb-3">Beverages &amp; Sides</h4>
+              <div class="flex items-center justify-between py-2 border-b border-slate-100 text-sm">
+                <span class="font-medium text-slate-800">Potato Chips (1 per meal)</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-800 font-bold text-xs">${orders.length}</span>
+              </div>
+              ${renderCountRows(beverageCounts)}
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-amber-200 bg-amber-50/60 p-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900 mb-2">Allergies &amp; Special Requests (${allergyList.length})</h4>
+            ${allergyList.length === 0 ? '<p class="text-xs text-slate-500">No allergies or special requests reported.</p>' : `
+              <ul class="space-y-1.5 text-sm">
+                ${allergyList.map(o => `
+                  <li class="flex flex-wrap items-baseline gap-2">
+                    <span class="font-semibold text-slate-900">${esc(o.guestName)}</span>
+                    <span class="text-xs text-slate-500">(${esc(o.itemName)})</span>:
+                    ${o.allergies && o.allergies.toLowerCase() !== 'none' ? `<span class="text-xs font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded">ALLERGY: ${esc(o.allergies)}</span>` : ''}
+                    ${o.specialRequests ? `<span class="text-xs text-slate-700">${esc(o.specialRequests)}</span>` : ''}
+                  </li>
+                `).join('')}
+              </ul>
+            `}
+          </div>
+        `;
+      }
+
+      // TAB 3: INDIVIDUAL LABELS (STANDARD PRESETS + EXACT PHYSICAL DIMENSIONS)
+      const LABEL_PRESETS = {
+        avery5163: { name: 'Avery 5163 / 8163', widthIn: 4.0, heightIn: 2.0, cols: 2, rows: 5, marginTopIn: 0.5, marginLeftIn: 0.156, gapXIn: 0.188, gapYIn: 0 },
+        avery5164: { name: 'Avery 5164 / 8164', widthIn: 4.0, heightIn: 3.33, cols: 2, rows: 3, marginTopIn: 0.5, marginLeftIn: 0.156, gapXIn: 0.188, gapYIn: 0 },
+        avery5162: { name: 'Avery 5162 / 8162', widthIn: 4.0, heightIn: 1.33, cols: 2, rows: 7, marginTopIn: 0.83, marginLeftIn: 0.156, gapXIn: 0.188, gapYIn: 0 },
+        avery5161: { name: 'Avery 5161 / 8161', widthIn: 4.0, heightIn: 1.0, cols: 2, rows: 10, marginTopIn: 0.5, marginLeftIn: 0.156, gapXIn: 0.188, gapYIn: 0 },
+        avery5160: { name: 'Avery 5160 / 8160', widthIn: 2.625, heightIn: 1.0, cols: 3, rows: 10, marginTopIn: 0.5, marginLeftIn: 0.188, gapXIn: 0.125, gapYIn: 0 },
+        avery5168: { name: 'Avery 5168', widthIn: 3.5, heightIn: 5.0, cols: 2, rows: 2, marginTopIn: 0.5, marginLeftIn: 0.5, gapXIn: 0.5, gapYIn: 0 }
+      };
+
+      function getLabelConfig() {
+        if (!state.labelConfig) {
+          state.labelConfig = { preset: 'avery5163', showBorders: true, ...LABEL_PRESETS.avery5163 };
+        }
+        return state.labelConfig;
+      }
+
+      function syncLabelInputsFromConfig() {
+        const cfg = getLabelConfig();
+        document.getElementById('label-preset-select').value = cfg.preset || 'avery5163';
+        document.getElementById('label-show-borders').checked = cfg.showBorders !== false;
+        document.getElementById('lbl-width').value = cfg.widthIn;
+        document.getElementById('lbl-height').value = cfg.heightIn;
+        document.getElementById('lbl-cols').value = cfg.cols;
+        document.getElementById('lbl-rows').value = cfg.rows;
+        document.getElementById('lbl-mtop').value = cfg.marginTopIn;
+        document.getElementById('lbl-mleft').value = cfg.marginLeftIn;
+        document.getElementById('lbl-gapx').value = cfg.gapXIn;
+        document.getElementById('lbl-gapy').value = cfg.gapYIn;
+        const perPage = Number(cfg.cols) * Number(cfg.rows);
+        document.getElementById('label-spec-badge').textContent = `${cfg.widthIn}" × ${cfg.heightIn}" • ${cfg.cols}×${cfg.rows} (${perPage}/page)`;
+      }
+
+      function buildLabelCardHtml(o, cfg, forPrint = false) {
+        const grp = state.groups.find(g => g.id === o.groupId);
+        const extras = [o.addonLabel, o.choiceSelected].filter(Boolean).join(' • ');
+        const hasAllergy = o.allergies && o.allergies.toLowerCase() !== 'none';
+        const isCompact = Number(cfg.heightIn) <= 1.35;
+        const borderStyle = cfg.showBorders !== false ? 'border: 1px dashed #94a3b8;' : 'border: 1px solid transparent;';
+        const sizeStyle = forPrint
+          ? `width: ${cfg.widthIn}in; height: ${cfg.heightIn}in; box-sizing: border-box; overflow: hidden; ${borderStyle}`
+          : `${borderStyle} min-height: ${Math.max(1.2, Number(cfg.heightIn)).toFixed(2)}in;`;
+
+        if (isCompact) {
+          return `
+            <div class="label-card bg-white rounded-md flex flex-col justify-between" style="${sizeStyle} padding: 0.08in 0.12in; font-family: Inter, sans-serif;">
+              <div style="display:flex; justify-content:space-between; align-items:baseline; gap:4px; border-bottom:1px solid #e2e8f0; padding-bottom:2px;">
+                <span style="font-size: 11px; font-weight: 700; color: #0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(o.guestName)}</span>
+                <span style="font-size: 8.5px; color: #64748b; white-space:nowrap;">${esc(grp ? grp.company : '')}</span>
+              </div>
+              <div style="font-size: 10px; font-weight: 700; color: #092e2a; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                ${esc(o.itemName)}${extras ? ` <span style="font-weight:500; color:#11524b;">(${esc(extras)})</span>` : ''}
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; font-size: 9px;">
+                <span style="color:#334155;">${esc(o.beverage)} + Chips</span>
+                ${hasAllergy ? `<span style="background:#fee2e2; color:#991b1b; font-weight:700; padding:1px 4px; border-radius:3px; white-space:nowrap;">ALLERGY: ${esc(o.allergies)}</span>` : (o.specialRequests ? `<span style="color:#92400e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${esc(o.specialRequests)}</span>` : '')}
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="label-card bg-white rounded-lg flex flex-col justify-between" style="${sizeStyle} padding: 0.14in 0.18in; font-family: Inter, sans-serif;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; margin-bottom: 4px;">
+                <span style="font-weight: 700; color: #092e2a;">Embassy Suites Marlborough</span>
+                <span>${esc(grp ? formatDate(grp.date) : '')}</span>
+              </div>
+              <div style="font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase;">${esc(grp ? grp.company : '')}</div>
+              <div style="font-size: 15px; font-weight: 700; color: #0f172a; line-height: 1.2; margin-top: 1px;">${esc(o.guestName)}</div>
+            </div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 8px; margin-top: 4px;">
+              <div style="font-size: 12px; font-weight: 700; color: #092e2a;">${esc(o.itemName)}</div>
+              ${extras ? `<div style="font-size: 10.5px; font-weight: 500; color: #11524b;">${esc(extras)}</div>` : ''}
+              <div style="font-size: 10.5px; color: #334155; margin-top: 2px;"><strong>Beverage:</strong> ${esc(o.beverage)} &bull; w/ Chips</div>
+            </div>
+            ${(hasAllergy || o.specialRequests) ? `
+              <div style="margin-top: 4px; display: flex; flex-direction: column; gap: 2px;">
+                ${hasAllergy ? `<div style="font-size: 10px; font-weight: 700; color: #991b1b; background: #fee2e2; border: 1px solid #fca5a5; border-radius: 4px; padding: 2px 6px;">ALLERGY: ${esc(o.allergies)}</div>` : ''}
+                ${o.specialRequests ? `<div style="font-size: 10px; color: #334155; background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; padding: 2px 6px;"><strong>Note:</strong> ${esc(o.specialRequests)}</div>` : ''}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      function buildPrintableLabelSheets(orders, cfg) {
+        const cols = Math.max(1, Number(cfg.cols) || 2);
+        const rows = Math.max(1, Number(cfg.rows) || 5);
+        const perPage = cols * rows;
+        const pages = [];
+        for (let i = 0; i < orders.length; i += perPage) {
+          const slice = orders.slice(i, i + perPage);
+          const isLast = i + perPage >= orders.length;
+          pages.push(`
+            <div style="width: 8.5in; min-height: 10.8in; padding-top: ${cfg.marginTopIn}in; padding-left: ${cfg.marginLeftIn}in; box-sizing: border-box; ${isLast ? '' : 'page-break-after: always;'}">
+              <div style="display: grid; grid-template-columns: repeat(${cols}, ${cfg.widthIn}in); column-gap: ${cfg.gapXIn}in; row-gap: ${cfg.gapYIn}in;">
+                ${slice.map(o => buildLabelCardHtml(o, cfg, true)).join('')}
+              </div>
+            </div>
+          `);
+        }
+        return `<style>@media print { @page { size: letter portrait; margin: 0; } }</style>` + pages.join('');
+      }
+
+      function renderLabelsPreview() {
+        syncLabelInputsFromConfig();
+        const orders = getFilteredOrders();
+        const cfg = getLabelConfig();
+        const grid = document.getElementById('labels-preview-grid');
+        grid.className = Number(cfg.cols) >= 3
+          ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5'
+          : 'grid grid-cols-1 md:grid-cols-2 gap-4';
+
+        if (orders.length === 0) {
+          grid.innerHTML = '<div class="col-span-full text-center py-10 text-sm text-slate-500 border border-dashed border-slate-200 rounded-xl">No orders to generate labels for.</div>';
+          return;
+        }
+        grid.innerHTML = orders.map(o => buildLabelCardHtml(o, cfg, false)).join('');
+      }
+
+      document.getElementById('label-preset-select').addEventListener('change', (e) => {
+        const key = e.target.value;
+        const cfg = getLabelConfig();
+        cfg.preset = key;
+        if (LABEL_PRESETS[key]) {
+          Object.assign(cfg, LABEL_PRESETS[key]);
+        }
+        saveState();
+        renderLabelsPreview();
+      });
+
+      document.getElementById('label-show-borders').addEventListener('change', (e) => {
+        const cfg = getLabelConfig();
+        cfg.showBorders = e.target.checked;
+        saveState();
+        renderLabelsPreview();
+      });
+
+      document.querySelectorAll('.lbl-dim-input').forEach(inp => {
+        inp.addEventListener('change', () => {
+          const cfg = getLabelConfig();
+          cfg.preset = 'custom';
+          cfg.widthIn = parseFloat(document.getElementById('lbl-width').value) || 4.0;
+          cfg.heightIn = parseFloat(document.getElementById('lbl-height').value) || 2.0;
+          cfg.cols = parseInt(document.getElementById('lbl-cols').value, 10) || 2;
+          cfg.rows = parseInt(document.getElementById('lbl-rows').value, 10) || 5;
+          cfg.marginTopIn = parseFloat(document.getElementById('lbl-mtop').value) || 0;
+          cfg.marginLeftIn = parseFloat(document.getElementById('lbl-mleft').value) || 0;
+          cfg.gapXIn = parseFloat(document.getElementById('lbl-gapx').value) || 0;
+          cfg.gapYIn = parseFloat(document.getElementById('lbl-gapy').value) || 0;
+          saveState();
+          renderLabelsPreview();
+        });
+      });
+
+      // PRINTING FUNCTIONS
+      let lastPrintableHtml = '';
+      let lastPrintableTitle = 'Embassy Suites Print Report';
+
+      function triggerPrint(html, title = 'Print Preview') {
+        lastPrintableHtml = html;
+        lastPrintableTitle = title;
+        document.getElementById('print-area').innerHTML = html;
+        document.getElementById('print-preview-body').innerHTML = html;
+        document.getElementById('print-preview-title').textContent = title;
+        document.getElementById('print-preview-modal').classList.remove('hidden');
+      }
+
+      document.getElementById('close-print-preview-btn').addEventListener('click', () => {
+        document.getElementById('print-preview-modal').classList.add('hidden');
+      });
+
+      document.getElementById('preview-print-now-btn').addEventListener('click', () => {
+        window.print();
+      });
+
+      document.getElementById('download-printable-btn').addEventListener('click', () => {
+        const docHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>${esc(lastPrintableTitle)}</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"><\/script>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; padding: 24px; background: #fff; color: #0f172a; }
+    .label-card { break-inside: avoid; page-break-inside: avoid; }
+    @media print { .no-print { display: none !important; } body { padding: 0; } @page { margin: 0.45in; size: letter portrait; } }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="margin-bottom: 16px; display: flex; justify-content: flex-end;">
+    <button onclick="window.print()" style="background:#11524b;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:600;cursor:pointer;">Print Page</button>
+  </div>
+  ${lastPrintableHtml}
+</body>
+</html>`;
+        const blob = new Blob([docHtml], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'embassy_lunch_printable.html';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast('Printable HTML downloaded — open it in your browser to print');
+      });
+
+      document.getElementById('print-orders-btn').addEventListener('click', () => {
+        const orders = getFilteredOrders();
+        const label = getSelectedGroupLabel();
+        if (orders.length === 0) { showToast('No orders to print', 'error'); return; }
+        const html = `
+          <div style="font-family: Inter, sans-serif; color: #0f172a;">
+            <div style="border-bottom: 2px solid #092e2a; padding-bottom: 10px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #9c752b; font-weight: 700;">Embassy Suites by Hilton Boston Marlborough</div>
+                <h1 style="font-size: 20px; font-weight: 700; margin: 2px 0 0;">Pre-Order Lunch — Detailed Orders Report</h1>
+              </div>
+              <div style="text-align: right; font-size: 12px;">
+                <div style="font-weight: 600;">${esc(label)}</div>
+                <div style="color: #475569;">Total Orders: ${orders.length}</div>
+              </div>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1; text-align: left;">
+                  <th style="padding: 8px;">Guest Name</th>
+                  <th style="padding: 8px;">Menu Selection</th>
+                  <th style="padding: 8px;">Beverage</th>
+                  <th style="padding: 8px;">Allergies</th>
+                  <th style="padding: 8px;">Special Requests</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${orders.map(o => {
+                  const extras = [o.addonLabel, o.choiceSelected].filter(Boolean).join(' • ');
+                  const hasAllergy = o.allergies && o.allergies.toLowerCase() !== 'none';
+                  return `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 8px; font-weight: 600;">${esc(o.guestName)}</td>
+                      <td style="padding: 8px;">${esc(o.itemName)}${extras ? `<div style="font-size: 11px; color: #11524b;">${esc(extras)}</div>` : ''}</td>
+                      <td style="padding: 8px;">${esc(o.beverage)}</td>
+                      <td style="padding: 8px; ${hasAllergy ? 'color: #b91c1c; font-weight: 700;' : 'color: #64748b;'}">${esc(hasAllergy ? o.allergies : 'None')}</td>
+                      <td style="padding: 8px;">${esc(o.specialRequests || '—')}</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        triggerPrint(html, 'Detailed Orders Report');
+      });
+
+      document.getElementById('print-quantities-btn').addEventListener('click', () => {
+        const orders = getFilteredOrders();
+        const label = getSelectedGroupLabel();
+        if (orders.length === 0) { showToast('No orders to print', 'error'); return; }
+        const { entreeCounts, beverageCounts, addonCounts, choiceCounts, allergyList } = computeQuantities(orders);
+        const rowsHtml = (obj) => Object.entries(obj).sort((a, b) => b[1] - a[1])
+          .map(([k, v]) => `<tr><td style="padding:6px 8px; border-bottom:1px solid #e2e8f0;">${esc(k)}</td><td style="padding:6px 8px; border-bottom:1px solid #e2e8f0; text-align:right; font-weight:700;">${v}</td></tr>`).join('');
+
+        const html = `
+          <div style="font-family: Inter, sans-serif; color: #0f172a;">
+            <div style="border-bottom: 2px solid #092e2a; padding-bottom: 10px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #9c752b; font-weight: 700;">Embassy Suites by Hilton Boston Marlborough</div>
+                <h1 style="font-size: 20px; font-weight: 700; margin: 2px 0 0;">Kitchen Prep — Quantities Summary</h1>
+              </div>
+              <div style="text-align: right; font-size: 12px;">
+                <div style="font-weight: 600;">${esc(label)}</div>
+                <div style="color: #475569;">Total Meals: ${orders.length}</div>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+              <div style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px;">
+                <h2 style="font-size: 13px; text-transform: uppercase; margin: 0 0 8px; color: #092e2a;">Entrees &amp; Add-ons</h2>
+                <table style="width:100%; border-collapse:collapse; font-size:13px;">${rowsHtml(entreeCounts)}</table>
+                ${Object.keys(addonCounts).length ? `<h3 style="font-size:12px; margin:12px 0 4px;">Add-ons</h3><table style="width:100%; border-collapse:collapse; font-size:12px;">${rowsHtml(addonCounts)}</table>` : ''}
+                ${Object.keys(choiceCounts).length ? `<h3 style="font-size:12px; margin:12px 0 4px;">Dressings / Options</h3><table style="width:100%; border-collapse:collapse; font-size:12px;">${rowsHtml(choiceCounts)}</table>` : ''}
+              </div>
+              <div style="border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px;">
+                <h2 style="font-size: 13px; text-transform: uppercase; margin: 0 0 8px; color: #092e2a;">Beverages &amp; Chips</h2>
+                <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                  <tr><td style="padding:6px 8px; border-bottom:1px solid #e2e8f0;">Potato Chips</td><td style="padding:6px 8px; border-bottom:1px solid #e2e8f0; text-align:right; font-weight:700;">${orders.length}</td></tr>
+                  ${rowsHtml(beverageCounts)}
+                </table>
+              </div>
+            </div>
+            <div style="border: 1px solid #f59e0b; background: #fffbeb; border-radius: 8px; padding: 12px;">
+              <h2 style="font-size: 13px; text-transform: uppercase; margin: 0 0 8px; color: #92400e;">Allergies &amp; Special Requests</h2>
+              ${allergyList.length === 0 ? '<p style="font-size:12px; margin:0;">None reported.</p>' : `
+                <ul style="margin:0; padding-left:18px; font-size:12px; line-height:1.6;">
+                  ${allergyList.map(o => `<li><strong>${esc(o.guestName)}</strong> (${esc(o.itemName)}): ${o.allergies && o.allergies.toLowerCase() !== 'none' ? `<strong style="color:#b91c1c;">ALLERGY: ${esc(o.allergies)}</strong> ` : ''}${esc(o.specialRequests)}</li>`).join('')}
+                </ul>
+              `}
+            </div>
+          </div>
+        `;
+        triggerPrint(html, 'Kitchen Quantities Summary');
+      });
+
+      document.getElementById('print-labels-btn').addEventListener('click', () => {
+        const orders = getFilteredOrders();
+        if (orders.length === 0) { showToast('No labels to print', 'error'); return; }
+        const cfg = getLabelConfig();
+        const html = buildPrintableLabelSheets(orders, cfg);
+        triggerPrint(html, `Individual Order Labels (${cfg.widthIn}" × ${cfg.heightIn}")`);
+      });
+
+      // TAB 4: GROUPS & CUSTOM MENUS
+      function renderGroupsManager() {
+        const list = document.getElementById('groups-list-container');
+        if (state.groups.length === 0) {
+          list.innerHTML = '<p class="text-xs text-slate-500">No groups registered yet.</p>';
+        } else {
+          list.innerHTML = state.groups.map(g => {
+            const isSelected = g.id === editingGroupId;
+            const orderCount = state.orders.filter(o => o.groupId === g.id).length;
+            return `
+              <div class="rounded-xl border p-3.5 transition-all cursor-pointer ${isSelected ? 'border-embassy-700 bg-embassy-50/50 ring-1 ring-embassy-700' : 'border-slate-200 hover:border-slate-300 bg-white'}" data-select-group="${esc(g.id)}">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="font-bold text-sm text-slate-900">${esc(g.company)}</div>
+                    <div class="text-xs text-slate-600">${esc(formatDate(g.date))}</div>
+                    <div class="text-[11px] text-slate-500 mt-1">${g.enabledItemIds.length} menu items &bull; ${orderCount} orders</div>
+                  </div>
+                  <button type="button" data-delete-group="${esc(g.id)}" class="delete-group-btn text-xs text-rose-600 hover:text-rose-800 font-medium px-1.5 py-0.5">Delete</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+        renderGroupEditor();
+      }
+
+      document.getElementById('groups-list-container').addEventListener('click', (e) => {
+        const delBtn = e.target.closest('.delete-group-btn');
+        if (delBtn) {
+          e.stopPropagation();
+          const gid = delBtn.dataset.deleteGroup;
+          const grp = state.groups.find(g => g.id === gid);
+          openConfirmModal('Delete Group', `Delete "${grp?.company}" (${formatDate(grp?.date)}) and its associated orders?`, () => {
+            state.groups = state.groups.filter(g => g.id !== gid);
+            state.orders = state.orders.filter(o => o.groupId !== gid);
+            if (editingGroupId === gid) editingGroupId = state.groups[0]?.id || null;
+            saveState();
+            renderManagerGroupFilter();
+            renderGroupsManager();
+            showToast('Group deleted');
+          });
+          return;
+        }
+        const card = e.target.closest('[data-select-group]');
+        if (card) {
+          editingGroupId = card.dataset.selectGroup;
+          renderGroupsManager();
+        }
+      });
+
+      document.getElementById('create-group-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const company = document.getElementById('new-group-company').value.trim();
+        const date = document.getElementById('new-group-date').value;
+        const note = document.getElementById('new-group-note').value.trim();
+        if (!company || !date) return;
+
+        const newGroup = {
+          id: 'grp-' + Date.now(),
+          company,
+          date,
+          note,
+          enabledItemIds: ['turkey-blta', 'grilled-chicken', 'roast-beef', 'med-wrap', 'garden-salad'],
+          beverages: ['Pepsi', 'Diet Pepsi', 'Starry', 'Ginger Ale'],
+          sideNote: 'Served with Potato Chips and Choice of Beverage Below'
+        };
+        state.groups.push(newGroup);
+        editingGroupId = newGroup.id;
+        saveState();
+        document.getElementById('new-group-company').value = '';
+        document.getElementById('new-group-date').value = '';
+        document.getElementById('new-group-note').value = '';
+        renderManagerGroupFilter();
+        renderGroupsManager();
+        showToast(`Created ${company} (${formatDate(date)})`);
+      });
+
+      function renderGroupEditor() {
+        const empty = document.getElementById('group-editor-empty');
+        const panel = document.getElementById('group-editor-panel');
+        const group = state.groups.find(g => g.id === editingGroupId);
+        if (!group) {
+          empty.classList.remove('hidden');
+          panel.classList.add('hidden');
+          return;
+        }
+        empty.classList.add('hidden');
+        panel.classList.remove('hidden');
+
+        document.getElementById('editor-group-title').textContent = `${group.company} — ${formatDate(group.date)}`;
+        document.getElementById('editor-group-count').textContent = `${group.enabledItemIds.length} items enabled`;
+
+        const itemsList = document.getElementById('editor-items-list');
+        itemsList.innerHTML = state.menuLibrary.map(item => {
+          const checked = group.enabledItemIds.includes(item.id);
+          return `
+            <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="checkbox" class="toggle-group-item mt-0.5 h-4 w-4 rounded border-slate-300 text-embassy-700" data-item-id="${esc(item.id)}" ${checked ? 'checked' : ''} />
+              <div class="flex-1 min-w-0">
+                <div class="text-sm font-semibold text-slate-900">${esc(item.name)}</div>
+                <div class="text-xs text-slate-500">${esc(item.description)}</div>
+              </div>
+            </label>
+          `;
+        }).join('');
+
+        document.getElementById('editor-beverages-input').value = (group.beverages || []).join(', ');
+        document.getElementById('editor-side-note-input').value = group.sideNote || '';
+      }
+
+      document.getElementById('editor-items-list').addEventListener('change', (e) => {
+        if (!e.target.classList.contains('toggle-group-item')) return;
+        const group = state.groups.find(g => g.id === editingGroupId);
+        if (!group) return;
+        const itemId = e.target.dataset.itemId;
+        if (e.target.checked) {
+          if (!group.enabledItemIds.includes(itemId)) group.enabledItemIds.push(itemId);
+        } else {
+          group.enabledItemIds = group.enabledItemIds.filter(id => id !== itemId);
+        }
+        saveState();
+        renderGroupsManager();
+      });
+
+      document.getElementById('add-custom-item-btn').addEventListener('click', () => {
+        const name = document.getElementById('custom-item-name').value.trim();
+        const desc = document.getElementById('custom-item-desc').value.trim();
+        const addon = document.getElementById('custom-item-addon').value.trim();
+        const choicesRaw = document.getElementById('custom-item-choices').value.trim();
+        if (!name) {
+          showToast('Please enter an item name', 'error');
+          return;
+        }
+        const choices = choicesRaw ? choicesRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+        const newItem = {
+          id: 'custom-' + Date.now(),
+          name,
+          description: desc || 'Chef-prepared lunch selection',
+          addonLabel: addon,
+          choicesLabel: choices.length ? 'Selection' : '',
+          choices
+        };
+        state.menuLibrary.push(newItem);
+        const group = state.groups.find(g => g.id === editingGroupId);
+        if (group) group.enabledItemIds.push(newItem.id);
+        saveState();
+        document.getElementById('custom-item-name').value = '';
+        document.getElementById('custom-item-desc').value = '';
+        document.getElementById('custom-item-addon').value = '';
+        document.getElementById('custom-item-choices').value = '';
+        renderGroupsManager();
+        showToast(`Added "${name}"`);
+      });
+
+      document.getElementById('save-group-beverages-btn').addEventListener('click', () => {
+        const group = state.groups.find(g => g.id === editingGroupId);
+        if (!group) return;
+        const bevRaw = document.getElementById('editor-beverages-input').value;
+        group.beverages = bevRaw.split(',').map(s => s.trim()).filter(Boolean);
+        group.sideNote = document.getElementById('editor-side-note-input').value.trim();
+        saveState();
+        showToast('Beverage & side settings saved');
+      });
+
+      // TAB 5: SETTINGS
+      document.getElementById('change-pin-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newPin = document.getElementById('new-pin-input').value.trim();
+        if (newPin.length < 4) {
+          showToast('PIN must be at least 4 characters', 'error');
+          return;
+        }
+        state.managerPin = newPin;
+        saveState();
+        document.getElementById('new-pin-input').value = '';
+        showToast('Manager PIN updated');
+      });
+
+      document.getElementById('reset-demo-btn').addEventListener('click', () => {
+        openConfirmModal('Reset Demo Data', 'This will restore the default Embassy Suites groups, menus, and sample orders. Continue?', () => {
+          state = createDefaultState();
+          selectedManagerGroupId = state.groups[0]?.id || 'ALL';
+          editingGroupId = state.groups[0]?.id || null;
+          saveState();
+          renderManagerGroupFilter();
+          renderActiveManagerTab();
+          showToast('Demo data restored');
+        });
+      });
+
+      document.getElementById('manager-refresh-btn').addEventListener('click', async () => {
+        setSyncStatus('sync', 'Refreshing...');
+        try {
+          const remote = await fetchCloudState();
+          if (remote && Array.isArray(remote.groups)) {
+            state = remote;
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+            renderManagerGroupFilter();
+            renderActiveManagerTab();
+            setSyncStatus('ok', 'Cloud Synced');
+            showToast('Latest orders loaded from cloud');
+          }
+        } catch (err) {
+          setSyncStatus('err', 'Local Mode (Offline)');
+          showToast('Could not reach cloud database', 'error');
+        }
+      });
+
+      // Initial Boot + Cloud Sync
+      renderGuestCompanySelect();
+      (async function syncOnBoot() {
+        setSyncStatus('sync', 'Syncing...');
+        try {
+          const remote = await fetchCloudState();
+          if (remote && Array.isArray(remote.groups)) {
+            state = remote;
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+            renderGuestCompanySelect();
+            if (managerUnlocked) {
+              renderManagerGroupFilter();
+              renderActiveManagerTab();
+            }
+            setSyncStatus('ok', 'Cloud Synced');
+          } else {
+            await pushCloudState(state);
+            setSyncStatus('ok', 'Cloud Synced');
+          }
+        } catch (err) {
+          setSyncStatus('err', 'Local Mode (Offline)');
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>

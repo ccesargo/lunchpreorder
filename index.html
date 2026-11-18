@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -552,10 +553,12 @@
       const SUPABASE_URL = 'https://nwdqloricawtxrytqzfz.supabase.co';
       const SUPABASE_KEY = 'sb_publishable_aoxr0giwGH6qGIdeJSR8Zg_3aWVJzHb';
 
-      function setSyncStatus(status, text) {
+      function setSyncStatus(status, text, errDetail = '') {
+        lastSyncError = errDetail || '';
         const badge = document.getElementById('cloud-sync-badge');
         if (!badge) return;
         badge.textContent = text;
+        badge.title = errDetail ? 'Sync error: ' + errDetail : 'Database connection status';
         if (status === 'ok') {
           badge.className = 'hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-900/70 text-emerald-200 border border-emerald-500/40';
         } else if (status === 'err') {
@@ -565,33 +568,28 @@
         }
       }
 
-      function getSupabaseHeaders(extra = {}) {
-        const headers = { 'apikey': SUPABASE_KEY, ...extra };
-        if (SUPABASE_KEY.startsWith('eyJ')) {
-          headers['Authorization'] = `Bearer ${SUPABASE_KEY}`;
-        }
-        return headers;
-      }
+      const sbClient = (window.supabase && window.supabase.createClient)
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+        : null;
+      let lastSyncError = '';
 
       async function fetchCloudState() {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/app_state?id=eq.main&select=data`, {
-          headers: getSupabaseHeaders()
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const rows = await res.json();
-        return rows.length > 0 ? rows[0].data : null;
+        if (!sbClient) throw new Error('Supabase SDK not loaded');
+        const { data, error } = await sbClient
+          .from('app_state')
+          .select('data')
+          .eq('id', 'main')
+          .maybeSingle();
+        if (error) throw new Error(error.message || error.code || 'Query error');
+        return data ? data.data : null;
       }
 
       async function pushCloudState(payload) {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/app_state`, {
-          method: 'POST',
-          headers: getSupabaseHeaders({
-            'Content-Type': 'application/json',
-            'Prefer': 'resolution=merge-duplicates'
-          }),
-          body: JSON.stringify({ id: 'main', data: payload, updated_at: new Date().toISOString() })
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (!sbClient) throw new Error('Supabase SDK not loaded');
+        const { error } = await sbClient
+          .from('app_state')
+          .upsert({ id: 'main', data: payload, updated_at: new Date().toISOString() }, { onConflict: 'id' });
+        if (error) throw new Error(error.message || error.code || 'Upsert error');
       }
 
       const DEFAULT_MENU_LIBRARY = [
@@ -771,7 +769,7 @@
         } catch (e) {}
         pushCloudState(state)
           .then(() => setSyncStatus('ok', 'Cloud Synced'))
-          .catch(() => setSyncStatus('err', 'Local Mode (Offline)'));
+          .catch((err) => setSyncStatus('err', 'Local Mode (Offline)', err?.message || String(err)));
       }
 
       let state = loadState();
@@ -1935,8 +1933,16 @@
             showToast('Latest orders loaded from cloud');
           }
         } catch (err) {
-          setSyncStatus('err', 'Local Mode (Offline)');
+          setSyncStatus('err', 'Local Mode (Offline)', err?.message || String(err));
           showToast('Could not reach cloud database', 'error');
+        }
+      });
+
+      document.getElementById('cloud-sync-badge').addEventListener('click', () => {
+        if (lastSyncError) {
+          showToast('Sync error: ' + lastSyncError, 'error');
+        } else {
+          showToast('Cloud database is connected');
         }
       });
 
@@ -1960,7 +1966,7 @@
             setSyncStatus('ok', 'Cloud Synced');
           }
         } catch (err) {
-          setSyncStatus('err', 'Local Mode (Offline)');
+          setSyncStatus('err', 'Local Mode (Offline)', err?.message || String(err));
         }
       })();
     })();
